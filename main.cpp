@@ -3,10 +3,12 @@
 
 int main() {
 
-    string key = "0f1571c9479e859"; // assumed to be HEX
+    string key = "0f1571c947d9e859"; // assumed to be HEX
     string message = "02468aceeca86420";// assumed to be HEX
 
     string cipher = des_encrypt(key, message);
+    cout << "Message: " << message << endl;
+    cout << "Cipher Text: " << cipher << endl;
 
     return 0;
 }
