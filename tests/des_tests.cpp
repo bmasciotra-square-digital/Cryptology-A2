@@ -12,8 +12,8 @@ using namespace std;
 
 TEST_CASE("DES - Main Case") {
 
-    string key = "0f1571c947d9e859"; // assumed to be HEX
-    string message = "02468aceeca86420";// assumed to be HEX
+    string key = "0f1571c947d9e859";
+    string message = "02468aceeca86420";
 
     string cipher = des_encrypt(key, message);
 
@@ -23,8 +23,8 @@ TEST_CASE("DES - Main Case") {
 
 TEST_CASE("DES - Decrypted") {
 
-    string key = "0f1571c947d9e859"; // assumed to be HEX
-    string message = "02468aceeca86420";// assumed to be HEX
+    string key = "0f1571c947d9e859";
+    string message = "02468aceeca86420";
 
     string cipher = des_encrypt(key, message);
 
