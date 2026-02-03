@@ -1,7 +1,7 @@
 //
 // Created by bradley masciotra on 2026-01-27.
 //
-#include "fesitel_cipher.h"
+#include "feistel_cipher.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -381,8 +381,37 @@ string des_encrypt(string &key, string &message) {
     return cipher_text;
 }
 
-string des_decrypt(string &cipher_text) {
+string des_decrypt(string &key, string &cipher_text) {
+    // convert string to binary representation for operations
+    string message_to_bin = convert_str_to_binary(cipher_text);
+    string key_to_bin = convert_str_to_binary(key);
 
+    // convert the binary string to 64 bit blocks to accommodate a possibly larger message
+    vector<string> blocks = convert_binary_string_to_blocks(message_to_bin);
+
+    // Generate round keys
+    vector<string> keys = generate_round_keys(key_to_bin);
+
+    string message;
+
+    for (string &block: blocks) {
+        // Initial permutation for each block
+        string permuted_bits = initial_permutation(block);
+
+        string left = permuted_bits.substr(0, LEFT_BLOCK_SIZE);
+        string right = permuted_bits.substr(LEFT_BLOCK_SIZE, RIGHT_BLOCK_SIZE);
+
+        for (int round = 0; round < 16; round++) {
+            feistel_round(&left, &right, keys[16 - (round + 1)]);
+        }
+
+        string combined = right + left;
+        string bin_inverse = ip_inverse(combined);
+        message += convert_to_hex(bin_inverse);
+    }
+
+
+    return message;
 }
 
 

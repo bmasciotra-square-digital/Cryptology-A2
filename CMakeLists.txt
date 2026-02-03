@@ -14,13 +14,13 @@ FetchContent_MakeAvailable(Catch2)
 
 # Main application
 add_executable(A2 main.cpp
-    DES/fesitel_cipher.h
+        DES/feistel_cipher.h
     DES/feistel_cipher.cpp
 )
 
 # Test executable (links Catch2 and DES code)
 add_executable(A2tests tests/des_tests.cpp
-    DES/fesitel_cipher.h
+        DES/feistel_cipher.h
     DES/feistel_cipher.cpp
 )
 target_include_directories(A2tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

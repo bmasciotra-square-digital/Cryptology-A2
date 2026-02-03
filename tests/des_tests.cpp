@@ -5,7 +5,8 @@
 
 #include <catch2/catch.hpp>
 #include "string"
-#include "DES/fesitel_cipher.h"
+#include "DES/feistel_cipher.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -19,3 +20,18 @@ TEST_CASE("DES - Main Case") {
     REQUIRE(cipher == "DA02CE3A89ECAC3B");
 }
 
+
+TEST_CASE("DES - Decrypted") {
+
+    string key = "0f1571c947d9e859"; // assumed to be HEX
+    string message = "02468aceeca86420";// assumed to be HEX
+
+    string cipher = des_encrypt(key, message);
+
+    REQUIRE(cipher == "DA02CE3A89ECAC3B");
+
+    string decrypted = des_decrypt(key, cipher);
+    transform(message.begin(), message.end(), message.begin(), ::toupper);
+
+    REQUIRE(decrypted == message);
+}

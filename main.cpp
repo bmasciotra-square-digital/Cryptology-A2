@@ -1,5 +1,5 @@
 #include <iostream>
-#include "DES/fesitel_cipher.h"
+#include "DES/feistel_cipher.h"
 
 int main() {
 
@@ -10,5 +10,8 @@ int main() {
     cout << "Message: " << message << endl;
     cout << "Cipher Text: " << cipher << endl;
 
+    string decrypted = des_decrypt(key, cipher);
+
+    cout << "Decrypted: " << decrypted << endl;
     return 0;
 }
