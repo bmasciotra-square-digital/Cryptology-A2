@@ -1,0 +1,48 @@
+# IDE - JetBrains (CLion, IntelliJ, etc.)
+.idea/
+*.iml
+*.ipr
+*.iws
+*.xml
+out/
+
+# IDE - Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# IDE - VS Code (optional; remove if you want to commit shared settings)
+# .vscode/
+
+# CMake build directories
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# Compiled objects and binaries
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.exe
+*.out
+*.app
+A2
+A2tests
+
+# macOS
+.DS_Store
+
+# Editor backups
+*~
+*.swp
+*.swo
