@@ -35,7 +35,7 @@ string convert_str_to_binary(const string &hex) {
     return bin;
 }
 
-vector<string> convert_binary_string_to_blocks(string &binary) {
+vector<string> convert_binary_string_to_blocks(const string &binary) {
     vector<string> blocks;
 
     for (size_t i = 0; i < binary.size(); i += BLOCK_SIZE) {
@@ -53,7 +53,7 @@ vector<string> convert_binary_string_to_blocks(string &binary) {
 }
 
 
-string initial_permutation(string &bits) {
+string initial_permutation(const string &bits) {
     const int IP[64] = {
         58, 50, 42, 34, 26, 18, 10, 2,
         60, 52, 44, 36, 28, 20, 12, 4,
@@ -75,7 +75,7 @@ string initial_permutation(string &bits) {
 }
 
 
-string remove_parity_bits(string &key) {
+string remove_parity_bits(const string &key) {
     int PC1[56] = {
         57, 49, 41, 33, 25, 17, 9,
         1, 58, 50, 42, 34, 26, 18,
@@ -94,15 +94,15 @@ string remove_parity_bits(string &key) {
 }
 
 // Left circular shift by default 1
-string circular_shift(string &side, int amount = 1) {
-    size_t n = side.size();
-    amount %= (int) n;
+string circular_shift(const string &side, int amount = 1) {
+    const size_t n = side.size();
+    amount %= static_cast<int>(n);
 
     return side.substr(amount) + side.substr(0, amount);
 }
 
 // Perform PC 2
-string pc_2(string &combined_key) {
+string pc_2(const string &combined_key) {
     int PC2[48] = {
         14, 17, 11, 24, 1, 5,
         3, 28, 15, 6, 21, 10,
@@ -123,7 +123,7 @@ string pc_2(string &combined_key) {
     return roundKey;
 }
 
-vector<string> generate_round_keys(string &key) {
+vector<string> generate_round_keys(const string &key) {
     int shifts[16] = {
         1, 1, 2, 2, 2, 2, 2, 2,
         1, 2, 2, 2, 2, 2, 2, 1
@@ -205,7 +205,7 @@ string f_function(const string &right32, const string &key48) {
     const string xor_value = xor_bits(expanded, key48);
 
     // --- 3) S-Boxes (8 of them)
-    int S[8][4][16] = {
+    int S_BOXES[8][4][16] = {
         // S1
         {
             {14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7},
@@ -273,7 +273,7 @@ string f_function(const string &right32, const string &key48) {
         int row = (chunk[0] - '0') * 2 + (chunk[5] - '0');
         int col = (chunk[1] - '0') * 8 + (chunk[2] - '0') * 4 + (chunk[3] - '0') * 2 + (chunk[4] - '0');
 
-        int val = S[box][row][col]; // 0..15
+        int val = S_BOXES[box][row][col]; // 0..15
 
         sbox_out += bitset<4>(val).to_string();
     }
@@ -294,7 +294,7 @@ void feistel_round(string *left, string *right, const string &key) {
     *right = new_right;
 }
 
-string ip_inverse(string &bits) {
+string ip_inverse(const string &bits) {
     int IP_INV[64] = {
         40, 8, 48, 16, 56, 24, 64, 32,
         39, 7, 47, 15, 55, 23, 63, 31,
@@ -404,7 +404,7 @@ string des_decrypt(string &key, string &cipher_text) {
 
         string combined = right + left;
         string bin_inverse = ip_inverse(combined);
-        
+
         message += convert_to_hex(bin_inverse);
     }
 
