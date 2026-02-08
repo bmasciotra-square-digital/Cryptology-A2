@@ -14,12 +14,13 @@ constexpr int RIGHT_BLOCK_SIZE = 32;
 constexpr int HEX_BIN_SIZE = 4;
 constexpr int FEISTEL_ROUNDS = 16;
 
+
 string convert_str_to_binary(const string &hex) {
     string bin;
     bin.reserve(hex.size() * HEX_BIN_SIZE);
 
     // convert from ASCII to bin
-    for (char c: hex) {
+    for (const char c: hex) {
         int v;
 
         if (c >= '0' && c <= '9') v = c - '0';
@@ -54,6 +55,7 @@ vector<string> convert_binary_string_to_blocks(const string &binary) {
 
 
 string initial_permutation(const string &bits) {
+    // Initial Permutation
     const int IP[64] = {
         58, 50, 42, 34, 26, 18, 10, 2,
         60, 52, 44, 36, 28, 20, 12, 4,
@@ -67,7 +69,7 @@ string initial_permutation(const string &bits) {
 
     string output;
 
-    for (int i: IP) {
+    for (const int i: IP) {
         output += bits[i - 1];
     }
 
@@ -89,7 +91,7 @@ string remove_parity_bits(const string &key) {
 
     string out;
     out.reserve(56);
-    for (int i: PC1) out += key[i - 1];
+    for (const int i: PC1) out += key[i - 1];
     return out;
 }
 
@@ -116,7 +118,7 @@ string pc_2(const string &combined_key) {
 
     string roundKey;
 
-    for (int i: PC2) {
+    for (const int i: PC2) {
         roundKey += combined_key[i - 1];
     }
 
@@ -132,13 +134,13 @@ vector<string> generate_round_keys(const string &key) {
     vector<string> keys;
 
     // becomes 56 bit key
-    string remove_parity = remove_parity_bits(key);
+    const string remove_parity = remove_parity_bits(key);
 
     // break down into left and right sides of the 56 bit key
     string left = remove_parity.substr(0, 28);
     string right = remove_parity.substr(28, 28);
 
-    for (int shift: shifts) {
+    for (const int shift: shifts) {
         // circular shift each side
         left = circular_shift(left, shift);
         right = circular_shift(right, shift);
@@ -267,14 +269,19 @@ string f_function(const string &right32, const string &key48) {
     string sbox_out;
     sbox_out.reserve(32);
 
+    // for the 8 S Boxes
     for (int box = 0; box < 8; box++) {
+        // Get the 6 bits for the current box
         string chunk = xor_value.substr(box * 6, 6);
 
-        int row = (chunk[0] - '0') * 2 + (chunk[5] - '0');
-        int col = (chunk[1] - '0') * 8 + (chunk[2] - '0') * 4 + (chunk[3] - '0') * 2 + (chunk[4] - '0');
+        // Get the row and column for the current box
+        const int row = (chunk[0] - '0') * 2 + (chunk[5] - '0');
+        const int col = (chunk[1] - '0') * 8 + (chunk[2] - '0') * 4 + (chunk[3] - '0') * 2 + (chunk[4] - '0');
 
-        int val = S_BOXES[box][row][col]; // 0..15
+        // Get the value from the S Box
+        const int val = S_BOXES[box][row][col];
 
+        // Convert the value to a 4 bit binary string
         sbox_out += bitset<4>(val).to_string();
     }
 
@@ -285,17 +292,18 @@ string f_function(const string &right32, const string &key48) {
 
 
 void feistel_round(string *left, string *right, const string &key) {
-    string original_left = *right;
+    const string original_left = *right;
 
-    string f_out = f_function(*right, key);
-    string new_right = xor_bits(*left, f_out);
+    const string f_out = f_function(*right, key);
+    const string new_right = xor_bits(*left, f_out);
 
     *left = original_left;
     *right = new_right;
 }
 
 string ip_inverse(const string &bits) {
-    int IP_INV[64] = {
+    // IP Inverse Array
+    const int IP_INV[64] = {
         40, 8, 48, 16, 56, 24, 64, 32,
         39, 7, 47, 15, 55, 23, 63, 31,
         38, 6, 46, 14, 54, 22, 62, 30,
@@ -309,7 +317,7 @@ string ip_inverse(const string &bits) {
     string output;
     output.reserve(64);
 
-    for (int i: IP_INV) {
+    for (const int i: IP_INV) {
         output += bits[i - 1];
     }
 
